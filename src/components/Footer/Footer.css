@@ -1,0 +1,48 @@
+.footer {
+    padding: 20px 40px; /* Khoảng cách nội dung */
+    font-size: 12px;
+    font-family: "Montserrat", sans-serif;
+    line-height: 1.8;
+    text-align: left; /* Căn trái */
+}
+
+.footer h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+.footer .highlight{
+    color: #4dc4cd;
+}
+
+.footer ul {
+    list-style-type: disc; /* Danh sách dạng chấm tròn */
+    margin-left: 20px; /* Lùi vào bên trái */
+    padding-left: 0;
+}
+
+.footer ul li {
+    margin-bottom: 10px;
+}
+
+.footer_icon {
+    display: flex;
+    justify-content: end; /* Căn giữa các biểu tượng */
+    gap: 15px; /* Khoảng cách giữa các biểu tượng */
+    margin-top: 20px; /* Khoảng cách giữa nội dung và biểu tượng */
+}
+
+.footer_icon img {
+    width: 30px; /* Kích thước biểu tượng */
+    height: 30px;
+    cursor: pointer; /* Trỏ chuột dạng click */
+    transition: transform 0.3s ease; /* Hiệu ứng hover */
+}
+
+.footer .highlight:hover{
+    color: #feb47b;
+}
+
+.footer_icon img:hover {
+    transform: scale(1.2); /* Phóng to khi hover */
+}
