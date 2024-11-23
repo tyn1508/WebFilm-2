@@ -11,37 +11,46 @@ const firebaseConfig = {
   appId: "1:282820710796:web:f0d689a4f2b349067406a9"
 };
 
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const signup = async (name, email , password)=>{
+// Hàm đăng ký
+const signup = async (name, email, password) => {
     try {
-        const res = await createUserWithEmailAndPassword(auth , email, password);
+        const res = await createUserWithEmailAndPassword(auth, email, password);
         const user = res.user;
-        await addDoc(collection(db,"user"),{
-            uid:user.uid,
+        await addDoc(collection(db, "user"), {
+            uid: user.uid,
             name,
-            authProvider:"local",
+            authProvider: "local",
             email,
-        })
+        });
     } catch (error) {
         console.log(error);
-        alert(error);
+        alert(error.message); // Chỉ hiển thị thông báo lỗi
     }
-}
-const login = async ()=>{
+};
+
+// Hàm đăng nhập
+const login = async (email, password) => { // Thêm tham số email và password
     try {
-         await signInWithEmailAndPassword(auth, email, password);
+        await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
         console.log(error);
-        alert(error);
+        alert(error.message); // Chỉ hiển thị thông báo lỗi
     }
-}
+};
 
-const logout = () =>{
-    signOut(auth);
-}
+// Hàm đăng xuất
+const logout = async () => { // Thêm async để xử lý promise
+    try {
+        await signOut(auth);
+    } catch (error) {
+        console.log(error);
+        alert(error.message); // Chỉ hiển thị thông báo lỗi
+    }
+};
 
-export (auth, db , login, signup, logout);
+// Xuất các hàm và biến
+export { auth, db, login, signup, logout };
