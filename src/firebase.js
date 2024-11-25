@@ -38,7 +38,7 @@ const login = async (email, password) => { // Thêm tham số email và password
         await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
         console.log(error);
-        alert(error.message); // Chỉ hiển thị thông báo lỗi
+        alert("Kiểm tra lại thông tin đăng nhập."); // Chỉ hiển thị thông báo lỗi
     }
 };
 
