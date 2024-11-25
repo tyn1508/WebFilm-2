@@ -48,12 +48,13 @@ const TitleCards = ({ title, category }) => {
         <Swiper spaceBetween={30} slidesPerView={6}>
           {movies.map((movie) => (
             <SwiperSlide key={movie.id} className="card">
-              <Link to={`/player/${movie.id}`}>
+              <Link style={{textDecoration:"none"}} to={`/player/${movie.id}`}>
                 <img
                   src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                   alt={movie.title}
                 />
                 <h3>{movie.title}</h3>
+                
               </Link>
             </SwiperSlide>
           ))}
