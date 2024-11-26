@@ -18,6 +18,11 @@ const db = getFirestore(app);
 // Hàm đăng ký
 const signup = async (name, email, password) => {
     try {
+         // Kiểm tra xem tên có được nhập hay không
+        if (!name) {
+            throw new Error("Tên không được để trống."); 
+            // lỗi nếu tên thiếu
+        }
         const res = await createUserWithEmailAndPassword(auth, email, password);
         const user = res.user;
         await addDoc(collection(db, "user"), {
@@ -38,7 +43,8 @@ const login = async (email, password) => { // Thêm tham số email và password
         await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
         console.log(error);
-        alert("Kiểm tra lại thông tin đăng nhập."); // Chỉ hiển thị thông báo lỗi
+        alert("Kiểm tra lại thông tin đăng nhập.");
+         // Chỉ hiển thị thông báo lỗi
     }
 };
 
