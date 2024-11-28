@@ -53,7 +53,7 @@
         cursor: pointer;
         position: relative;
     }   
-    .navbar_right .dropdown{
+    .navbar_right .dropdown {
         position: absolute;
         top: 100%;
         right: 0;
@@ -63,11 +63,12 @@
         padding: 18px 22px;
         text-decoration: underline;
         z-index: 1;
-    display: none;
+        display: none;
     }
-    .navbar .dropdown p{
-        font-size: 13px;
+    .navbar_right .dropdown p {
+        font-size: 16px;
         cursor: pointer;
+        margin: 10px 0;
     }
     .navbar_profile:hover .dropdown{
         display: block;
