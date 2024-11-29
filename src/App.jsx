@@ -21,7 +21,7 @@ const navigate = useNavigate();
         navigate('/login')
       }
     })
-  },[])
+  },[navigate])
   
   return (
     <div>
