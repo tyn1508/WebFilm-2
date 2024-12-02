@@ -32,7 +32,7 @@ const TitleCards = ({ title, category }) => {
 
       try {
         const response = await axios.get(url);
-        setMovies(response.data.results.slice(0, 15)); // Fetch the first 15 movies
+        setMovies(response.data.results.slice(0, 30)); // Fetch the first 15 movies
       } catch (error) {
         console.error('Error fetching the movies:', error);
       }
@@ -48,7 +48,7 @@ const TitleCards = ({ title, category }) => {
         <Swiper spaceBetween={30} slidesPerView={6}>
           {movies.map((movie) => (
             <SwiperSlide key={movie.id} className="card">
-              <Link to={`/player/${movie.id}`}>
+              <Link style={{textDecoration:"none"}} to={`/player/${movie.id}`}>
                 <img
                   src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                   alt={movie.title}

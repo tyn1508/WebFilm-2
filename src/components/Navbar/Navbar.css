@@ -19,7 +19,7 @@
     .navbar_left .layout_logoText {
         font-size: 35px;
         font-family: "Rouge Script", cursive;
-        background: linear-gradient(to right, #4dc4cd, #feb47b); /* Thay đổi màu sắc theo ý muốn */
+        background: linear-gradient(to right, #4dc4cd, #feb47b); 
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         cursor: pointer;
