@@ -1,36 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './Update.css';
-import { auth, db } from '../../firebase'; // Nhập auth và db từ firebase
+import { auth, db } from '../../firebase'; 
 import { updateProfile } from "firebase/auth";
-import { collection, query, where, getDocs } from 'firebase/firestore'; // Nhập các phương thức Firestore
+import { collection, query, where, getDocs } from 'firebase/firestore';
 
 const Update = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
-  const [currentPassword, setCurrentPassword] = useState(''); // Mật khẩu hiện tại
-  const [newPassword, setNewPassword] = useState(''); // Mật khẩu mới
-  const [confirmPassword, setConfirmPassword] = useState(''); // Xác nhận mật khẩu mới
-  const [isEditing, setIsEditing] = useState(false); // Trạng thái chỉnh sửa
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState(''); 
+  const [confirmPassword, setConfirmPassword] = useState(''); 
+  const [isEditing, setIsEditing] = useState(false); 
 
   useEffect(() => {
-    const user = auth.currentUser ; // Lấy thông tin người dùng hiện tại
+    const user = auth.currentUser ; 
     if (user) {
-      setEmail(user.email); // Gán email
-      fetchUserNameByEmail(user.email); // Gọi hàm để lấy tên người dùng
+      setEmail(user.email);
+      fetchUserNameByEmail(user.email); 
     }
   }, []);
 
   // Hàm để lấy tên người dùng từ Firestore dựa trên email
   const fetchUserNameByEmail = async (email) => {
-    const usersRef = collection(db, 'user'); // Tham chiếu đến bộ sưu tập users
-    const q = query(usersRef, where('email', '==', email)); // Tạo truy vấn
-
+    const usersRef = collection(db, 'user');
+    const q = query(usersRef, where('email', '==', email));
     try {
       const querySnapshot = await getDocs(q);
       if (!querySnapshot.empty) {
         querySnapshot.forEach((doc) => {
           const userData = doc.data();
-          setUsername(userData.name); // Cập nhật trạng thái tên người dùng
+          setUsername(userData.name); 
         });
       } else {
         console.log("Không tìm thấy người dùng với email:", email);
@@ -43,29 +42,28 @@ const Update = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const user = auth.currentUser ; 
-    // Lấy thông tin người dùng hiện tại
 
     if (user) {
       try {
-        // Cập nhật tên hiển thị
+     
         await updateProfile(user, {
           displayName: username, 
-          // Cập nhật tên người dùng
+
         });
 
-        // Cập nhật mật khẩu
+       
         if (newPassword && newPassword === confirmPassword) {
           await user.updatePassword(newPassword);
-           // Cập nhật mật khẩu mới
+         
         }
 
         console.log('Cập nhật thông tin thành công:', { username, email });
         setIsEditing(false); 
-        // Đóng chế độ chỉnh sửa
+    
       } catch (error) {
         console.error("Lỗi khi cập nhật thông tin:", error);
         alert(error.message); 
-        // Hiển thị thông báo lỗi
+ 
       }
     }
   };

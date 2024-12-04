@@ -5,14 +5,16 @@ import bell_icon from '../../assets/bell_icon.svg';
 import profile_img from '../../assets/profile_img.png';
 import caret_icon from '../../assets/caret_icon.svg';
 import { logout } from '../../firebase';
-import { db } from '../../firebase'; // Nhập Firestore
-import { collection, query, where, getDocs } from 'firebase/firestore'; // Nhập các phương thức Firestore
-import { auth } from '../../firebase'; // Nhập Firebase auth
+import { db } from '../../firebase'; 
+import { collection, query, where, getDocs } from 'firebase/firestore'; 
+import { auth } from '../../firebase'; 
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
     const navbarRef = useRef();
     const [userName, setUserName] = useState('');
-    const [ setEmail] = useState('');
+    const [setEmail] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -25,31 +27,31 @@ const Navbar = () => {
 
         window.addEventListener('scroll', handleScroll);
 
-        // Cleanup function to remove the event listener
+      
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
 
     useEffect(() => {
-        const user = auth.currentUser ; // Lấy thông tin người dùng hiện tại
+        const user = auth.currentUser ; 
         if (user) {
-            setEmail(user.email); // Lưu email của người dùng
-            fetchUserNameByEmail(user.email); // Gọi hàm để lấy tên người dùng
+            setEmail(user.email); 
+            fetchUserNameByEmail(user.email); 
         }
     }, []);
 
     // Hàm để lấy tên người dùng từ Firestore dựa trên email
     const fetchUserNameByEmail = async (email) => {
-        const usersRef = collection(db, 'user'); // Tham chiếu đến bộ sưu tập users
-        const q = query(usersRef, where('email', '==', email)); // Tạo truy vấn
+        const usersRef = collection(db, 'user'); 
+        const q = query(usersRef, where('email', '==', email));
 
         try {
             const querySnapshot = await getDocs(q);
             if (!querySnapshot.empty) {
                 querySnapshot.forEach((doc) => {
                     const userData = doc.data();
-                    setUserName(userData.name); // Cập nhật trạng thái tên người dùng
+                    setUserName(userData.name);
                 });
             } else {
                 console.log("Không tìm thấy người dùng với email:", email);
@@ -57,6 +59,10 @@ const Navbar = () => {
         } catch (error) {
             console.error("Lỗi khi lấy tên người dùng:", error);
         }
+    };
+
+    const handleProfileClick = () => {
+        navigate('/update'); 
     };
 
     return (
@@ -75,14 +81,13 @@ const Navbar = () => {
             </div>
             <div className="navbar_right">
                 <img src={search_icon} className='icons' alt="" />
-                <p>Chào mừng, {userName || 'Khách'}</p> {/* Hiển thị tên người dùng */}
+                <p>Chào mừng, {userName || 'Khách'}</p> 
                 <img src={bell_icon} className='icons' alt="" />
                 <div className="navbar_profile">
                     <img src={profile_img} className='profile' alt="" />
                     <img src={caret_icon} className='' alt="" />
                     <div className="dropdown">
-                        <p>Profile</p>
-                        <p>Settings</p>
+                        <p onClick={handleProfileClick}>Profile</p>
                         <p onClick={() => { logout() }}>
                             Logout
                         </p>
