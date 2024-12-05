@@ -32,7 +32,7 @@ const TitleCards = ({ title, category }) => {
 
       try {
         const response = await axios.get(url);
-        setMovies(response.data.results.slice(0, 15)); // Fetch the first 15 movies
+        setMovies(response.data.results.slice(0, 30)); // Fetch the first 15 movies
       } catch (error) {
         console.error('Error fetching the movies:', error);
       }

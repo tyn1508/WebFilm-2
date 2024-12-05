@@ -9,15 +9,15 @@ import play_icon from '../../assets/play_icon.png';
 import info_icon from '../../assets/info_icon.png';
 
 const Home = () => {
-  // Define all TMDB categories
+
   const categories = [
     { title: 'Phim Phổ Biến', category: 'popular' },
     { title: 'Phim Đánh Giá Cao', category: 'top_rated' },
     { title: 'Phim Đang Chiếu', category: 'now_playing' },
     { title: 'Phim Thịnh Hành (Hôm Nay)', category: 'trending_today' },
     { title: 'Phim Thịnh Hành (Tuần)', category: 'trending_week' },
-    { title: 'Phim Hành Động', category: 'discover_action' }, // Example with genre filter
-    { title: 'Phim Hài Hước', category: 'discover_comedy' }, // Example with genre filter
+    { title: 'Phim Hành Động', category: 'discover_action' }, 
+    { title: 'Phim Hài Hước', category: 'discover_comedy' }, 
   ];
 
   return (

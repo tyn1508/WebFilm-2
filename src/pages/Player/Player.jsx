@@ -53,7 +53,11 @@ const Player = () => {
         allowFullScreen
       ></iframe>
       <div className="player-info">
-        <p>{apiData.published_at || "N/A"}</p>
+        <p>{new Date(apiData.published_at).toLocaleString("En-GB",{
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit', 
+        }) || "N/A"}</p>
         <p>{apiData.name || "N/A"}</p>
         <p>{apiData.type || "N/A"}</p>
       </div>

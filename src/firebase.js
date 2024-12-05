@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { addDoc, collection, getFirestore } from "firebase/firestore";
+import { addDoc, collection, getFirestore, doc, updateDoc } from "firebase/firestore";
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 const firebaseConfig = {
@@ -18,11 +18,6 @@ const db = getFirestore(app);
 // Hàm đăng ký
 const signup = async (name, email, password) => {
     try {
-         // Kiểm tra xem tên có được nhập hay không
-        if (!name) {
-            throw new Error("Tên không được để trống."); 
-            // lỗi nếu tên thiếu
-        }
         const res = await createUserWithEmailAndPassword(auth, email, password);
         const user = res.user;
         await addDoc(collection(db, "user"), {
@@ -58,5 +53,17 @@ const logout = async () => { // Thêm async để xử lý promise
     }
 };
 
+// Hàm cập nhật thông tin người dùng
+const updateUser  = async (uid, updatedData) => {
+    try {
+        const userDoc = doc(db, "user", uid); // Lấy tài liệu người dùng theo uid
+        await updateDoc(userDoc, updatedData); // Cập nhật tài liệu
+        console.log("Cập nhật thông tin thành công");
+    } catch (error) {
+        console.log(error);
+        alert("Cập nhật thông tin không thành công: " + error.message);
+    }
+};
+
 // Xuất các hàm và biến
-export { auth, db, login, signup, logout };
+export { auth, db, login, signup, logout, updateUser  };

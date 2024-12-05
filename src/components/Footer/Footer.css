@@ -39,7 +39,9 @@
     cursor: pointer; /* Trỏ chuột dạng click */
     transition: transform 0.3s ease; /* Hiệu ứng hover */
 }
-
+.footer .highlight{
+    cursor: pointer;
+}
 .footer .highlight:hover{
     color: #feb47b;
 }
