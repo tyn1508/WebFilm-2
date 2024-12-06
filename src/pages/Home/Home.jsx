@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import TitleCards from '../../components/TitleCards/TitleCards';
 import Footer from '../../components/Footer/Footer';
@@ -9,6 +9,7 @@ import play_icon from '../../assets/play_icon.png';
 import info_icon from '../../assets/info_icon.png';
 
 const Home = () => {
+  const [searchTerm, setSearchTerm] = useState('');
 
   const categories = [
     { title: 'Phim Phổ Biến', category: 'popular' },
@@ -22,7 +23,7 @@ const Home = () => {
 
   return (
     <div className="home">
-      <Navbar />
+      <Navbar onSearch={setSearchTerm} />
       <div className="hero">
         <img src={hero_banner} alt="hero banner" className="banner-img" />
         <div className="hero_caption">
@@ -37,9 +38,13 @@ const Home = () => {
         </div>
       </div>
       <div className="more_cards">
-        {categories.map((cat, index) => (
-          <TitleCards key={index} title={cat.title} category={cat.category} />
-        ))}
+        {searchTerm ? (
+          <TitleCards title="Kết quả tìm kiếm" category="search" searchTerm={searchTerm} />
+        ) : (
+          categories.map((cat, index) => (
+            <TitleCards key={index} title={cat.title} category={cat.category} searchTerm={searchTerm} />
+          ))
+        )}
       </div>
       <Footer />
     </div>

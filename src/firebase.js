@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { addDoc, collection, getFirestore, doc, updateDoc } from "firebase/firestore";
-import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut, sendPasswordResetEmail } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDeVzswjEWwUA49GgQ4tjYI0EipBsJU-sU",
@@ -64,6 +64,17 @@ const updateUser  = async (uid, updatedData) => {
         alert("Cập nhật thông tin không thành công: " + error.message);
     }
 };
+// Hàm gửi mã xác thực qua email
+const resetPassword = async (email) => {
+    try {
+        await sendPasswordResetEmail(auth, email);
+        console.log("Mã xác thực đã được gửi đến email của bạn.");
+    } catch (error) {
+        console.log(error);
+        alert("Có lỗi xảy ra: " + error.message);
+    }
+};
+
 
 // Xuất các hàm và biến
-export { auth, db, login, signup, logout, updateUser  };
+export { auth, db, login, signup, logout, updateUser , resetPassword };

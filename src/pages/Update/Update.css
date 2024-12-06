@@ -7,7 +7,7 @@
 .update_form {
     width: 100%;
     max-width: 450px;
-    background: rgba(0, 0, 0, 0.75); /* Nền tương tự như login */
+    background: rgba(0, 0, 0, 0.125); /* Nền tương tự như login */
     border-radius: 5px;
     padding: 60px;
     margin: auto;

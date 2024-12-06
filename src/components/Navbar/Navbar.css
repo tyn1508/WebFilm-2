@@ -34,10 +34,24 @@
     margin-right: 20px;
     cursor: pointer;
 }
+.navbar_left ul li:hover{
+    color: #4dc4cd;
+    
+}
 .navbar_right{
     display: flex;
     gap: 20px;
     align-items: center;
+}
+.navbar_right .search_film {
+    width: 200px;
+    height: 25px;
+    border-radius: 5px;
+    text-align: left;
+    background-color: #e5e5e5;
+    font-size: 14px;
+    gap: 20px;
+    text-decoration: none;
 }
 .navbar_right .icons{
     cursor: pointer;
