@@ -37,13 +37,15 @@
     background: white;
     border-radius: 5px;
     cursor: pointer;
+    color: #000;
 }
 .hero_btns .btn.dark_btn{
     color: #f9f9f9;
     background: #6d6d6eb3;
 }
 .hero_btns .btn:hover{
-    background: #ffffffbf;
+    background: #6d6d6e66;
+    
 }
 .hero_btns .btn.dark_btn:hover{
     background: #6d6d6e66;

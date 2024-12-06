@@ -13,6 +13,7 @@
 }
 .footer .highlight{
     color: #4dc4cd;
+    cursor: pointer;
 }
 
 .footer ul {
