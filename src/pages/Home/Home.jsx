@@ -1,4 +1,4 @@
-import React from 'react';
+
 import Navbar from '../../components/Navbar/Navbar';
 import TitleCards from '../../components/TitleCards/TitleCards';
 import Footer from '../../components/Footer/Footer';

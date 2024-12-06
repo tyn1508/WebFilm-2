@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import './Navbar.css';
 import search_icon from '../../assets/search_icon.svg';
 import bell_icon from '../../assets/bell_icon.svg';
@@ -39,7 +39,7 @@ const Navbar = () => {
             setEmail(user.email); 
             fetchUserNameByEmail(user.email); 
         }
-    }, []);
+    });
 
     // Hàm để lấy tên người dùng từ Firestore dựa trên email
     const fetchUserNameByEmail = async (email) => {
