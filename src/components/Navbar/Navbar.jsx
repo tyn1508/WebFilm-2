@@ -1,18 +1,19 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
 import './Navbar.css';
+
 import search_icon from '../../assets/search_icon.svg';
 import bell_icon from '../../assets/bell_icon.svg';
 import profile_img from '../../assets/profile_img.png';
 import caret_icon from '../../assets/caret_icon.svg';
-import { logout } from '../../firebase';
-import { db } from '../../firebase'; // Nhập Firestore
-import { collection, query, where, getDocs } from 'firebase/firestore'; // Nhập các phương thức Firestore
-import { auth } from '../../firebase'; // Nhập Firebase auth
 
-const Navbar = () => {
+import { auth, logout } from '../../firebase';
+
+const Navbar = ({ onSearch }) => {
     const navbarRef = useRef();
-    const [userName, setUserName] = useState('');
-    const [email, setEmail] = useState('');
+    const navigate = useNavigate();
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         const handleScroll = () => {
@@ -25,67 +26,84 @@ const Navbar = () => {
 
         window.addEventListener('scroll', handleScroll);
 
-        // Cleanup function to remove the event listener
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
 
-    useEffect(() => {
-        const user = auth.currentUser ; // Lấy thông tin người dùng hiện tại
-        if (user) {
-            setEmail(user.email); // Lưu email của người dùng
-            fetchUserNameByEmail(user.email); // Gọi hàm để lấy tên người dùng
-        }
-    }, []);
-
-    // Hàm để lấy tên người dùng từ Firestore dựa trên email
-    const fetchUserNameByEmail = async (email) => {
-        const usersRef = collection(db, 'user'); // Tham chiếu đến bộ sưu tập users
-        const q = query(usersRef, where('email', '==', email)); // Tạo truy vấn
-
-        try {
-            const querySnapshot = await getDocs(q);
-            if (!querySnapshot.empty) {
-                querySnapshot.forEach((doc) => {
-                    const userData = doc.data();
-                    setUserName(userData.name); // Cập nhật trạng thái tên người dùng
-                });
-            } else {
-                console.log("Không tìm thấy người dùng với email:", email);
-            }
-        } catch (error) {
-            console.error("Lỗi khi lấy tên người dùng:", error);
+    const handleProfileClick = () => {
+        if (auth.currentUser) {
+            navigate('/update');
+        } else {
+            navigate('/login');
         }
     };
 
+    const handleSearch = async () => {
+        if (searchTerm.trim() === '') {
+            alert('Vui lòng nhập từ khóa tìm kiếm.');
+            return;
+        }
+        try {
+            const results = await onSearch(searchTerm);
+            if (results.length === 0) {
+                alert('Không tìm thấy kết quả nào.');
+            }
+        } catch (error) {
+            console.error("Error during search:", error);
+            alert('Đã xảy ra lỗi trong quá trình tìm kiếm.');
+        }
+        setSearchTerm('');
+    };
     return (
         <div className='navbar' ref={navbarRef}>
             <div className="navbar_left">
                 <div className="layout_logoText">
                     FilmLag
                 </div>
-                <ul>
+                <ul className="layout_menu">
                     <li>Trang chủ</li>
                     <li>Tv Shows</li>
                     <li>Movies</li>
-                    <li>Danh sách yêu thích</li>
+                    <li >
+                    <Link to="/favorites">Danh sách yêu thích</Link>
+                    </li>
                     <li>FAQ</li>
                 </ul>
             </div>
             <div className="navbar_right">
-                <img src={search_icon} className='icons' alt="" />
-                <p>Chào mừng, {userName || 'Khách'}</p> {/* Hiển thị tên người dùng */}
-                <img src={bell_icon} className='icons' alt="" />
+                <input 
+                    type="text" 
+                    placeholder='Tìm kiếm' 
+                    className='search_film'
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onKeyPress={(e) => {
+                        if (e.key === 'Enter') {
+                            handleSearch(); // Gọi hàm tìm kiếm khi nhấn Enter
+                        }
+                    }}
+                />
+                <img 
+                    src={search_icon} 
+                    className='icons' 
+                    alt="Search" 
+                    onClick={handleSearch} 
+                />
+                
+                <img src={bell_icon} className='icons' alt="Notifications" />
                 <div className="navbar_profile">
-                    <img src={profile_img} className='profile' alt="" />
-                    <img src={caret_icon} className='' alt="" />
+                    <img src={profile_img} className='profile' alt="Profile" />
+                    <img src={caret_icon} className='caret' alt="Dropdown" />
                     <div className="dropdown">
-                        <p>Profile</p>
-                        <p>Settings</p>
-                        <p onClick={() => { logout() }}>
-                            Logout
-                        </p>
+                        <div className="dropdown-content">
+                            <p onClick={handleProfileClick}>
+                                Profile
+                            </p>
+                            <p onClick={logout}>
+                                Logout
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>

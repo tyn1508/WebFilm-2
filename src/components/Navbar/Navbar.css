@@ -1,78 +1,106 @@
-    @import url('https://fonts.googleapis.com/css2?family=Rouge+Script&display=swap');
-    .navbar{
-        width: 100%;
-        padding: 20px 6%;
-        display: flex;
-        justify-content: space-between;
-        position: fixed;
-        font-size: 16px;
-        color: #e5e5e5;
-        background-image: linear-gradient(180deg , rgba(0, 0, 0, 0.803) 10%, transparent);
-        z-index: 1000;
-    }
+@import url('https://fonts.googleapis.com/css2?family=Rouge+Script&display=swap');
+.navbar{
+    width: 100%;
+    padding: 20px 6%;
+    display: flex;
+    justify-content: space-between;
+    position: fixed;
+    font-size: 16px;
+    color: #e5e5e5;
+    background-image: linear-gradient(180deg , rgba(0, 0, 0, 0.803) 10%, transparent);
+    z-index: 1000;
+}
 
-    .navbar_left{
-        display: flex;
-        align-items: center;
-        gap: 60px;
-    }
-    .navbar_left .layout_logoText {
-        font-size: 35px;
-        font-family: "Rouge Script", cursive;
-        background: linear-gradient(to right, #4dc4cd, #feb47b); /* Thay đổi màu sắc theo ý muốn */
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        cursor: pointer;
-    }
-    .navbar_left ul{
-        display: flex;
-        flex-wrap: nowrap;
-        list-style: none;
-        gap: 20px;
-    }
-    .navbar_left ul li{
-        margin-right: 20px;
-        cursor: pointer;
-    }
-    .navbar_right{
-        display: flex;
-        gap: 20px;
-        align-items: center;
-    }
-    .navbar_right .icons{
-        cursor: pointer;
-    }
-    .navbar_right .profile{
-        border-radius: 5px;
-        width: 35px;
-    }
-    .navbar_profile{
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        cursor: pointer;
-        position: relative;
-    }   
-    .navbar_right .dropdown {
-        position: absolute;
-        top: 100%;
-        right: 0;
-        border-radius: 10px;
-        width: max-content;
-        background: #231f1f87;
-        padding: 18px 22px;
-        text-decoration: underline;
-        z-index: 1;
-        display: none;
-    }
-    .navbar_right .dropdown p {
-        font-size: 16px;
-        cursor: pointer;
-        margin: 10px 0;
-    }
-    .navbar_profile:hover .dropdown{
-        display: block;
-    }
-    .nav-dark{
-        background: #000000e0;
-    }
+.navbar_left{
+    display: flex;
+    align-items: center;
+    gap: 60px;
+}
+.navbar_left .layout_logoText {
+    font-size: 35px;
+    font-family: "Rouge Script", cursive;
+    background: linear-gradient(to right, #4dc4cd, #feb47b); /* Thay đổi màu sắc theo ý muốn */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    cursor: pointer;
+}
+.navbar_left ul{
+    display: flex;
+    flex-wrap: nowrap;
+    list-style: none;
+    gap: 20px;
+}
+.navbar_left ul li{
+    margin-right: 20px;
+    cursor: pointer;
+}
+.navbar_left ul li:hover{
+    color: #4dc4cd;
+    
+}
+css
+Insert Code
+Run
+Copy code
+.navbar_left ul li a{ 
+    margin-right: 20px;
+    cursor: pointer;
+    color: white; /* Màu chữ trắng */
+    text-decoration: none; /* Bỏ gạch chân */
+}
+
+.navbar_left ul li a:hover {
+    color: #4dc4cd; /* Màu chữ khi hover */
+}
+.navbar_right{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+.navbar_right .search_film {
+    width: 200px;
+    height: 25px;
+    border-radius: 5px;
+    text-align: left;
+    background-color: #e5e5e5;
+    font-size: 14px;
+    gap: 20px;
+    text-decoration: none;
+}
+.navbar_right .icons{
+    cursor: pointer;
+}
+.navbar_right .profile{
+    border-radius: 5px;
+    width: 35px;
+}
+.navbar_profile{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    position: relative;
+}   
+.navbar_right .dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    border-radius: 10px;
+    width: max-content;
+    background: #231f1f87;
+    padding: 18px 22px;
+    text-decoration: underline;
+    z-index: 1;
+    display: none;
+}
+.navbar_right .dropdown p {
+    font-size: 16px;
+    cursor: pointer;
+    margin: 10px 0;
+}
+.navbar_profile:hover .dropdown{
+    display: block;
+}
+.nav-dark{
+    background: #000000e0;
+}

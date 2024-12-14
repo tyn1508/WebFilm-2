@@ -49,3 +49,33 @@
     text-align: center;
     padding: 0 10px;
   }
+  button-group {
+    display: flex; /* Sử dụng Flexbox để căn chỉnh các nút */
+    justify-content: space-between; /* Căn giữa các nút */
+    width: 100%; /* Đặt chiều rộng của nhóm nút bằng 100% */
+    margin-top: 10px; /* Khoảng cách trên nhóm nút */
+  }
+  
+  button {
+    background-color: transparent; /* Nền trong suốt cho nút */
+    color: white; /* Chữ nút trắng */
+    border: 1px solid white; /* Đường viền trắng */
+    border-radius: 5px; /* Bo góc cho nút */
+    padding: 5px 5px; /* Thêm khoảng cách bên trong nút */
+    cursor: pointer; /* Con trỏ chuột khi hover */
+    margin-right: 5px; /* Khoảng cách giữa các nút */
+  }
+  
+  .play-button {
+    background-color: green; /* Nền xanh cho nút Play */
+    color: white; /* Chữ nút Play trắng */
+  }
+  
+  button:hover {
+    background-color: white; /* Nền trắng khi hover */
+    color: black; /* Chữ đen khi hover */
+  }
+  
+  .play-button:hover {
+    background-color: lightgreen; /* Nền sáng hơn khi hover */
+  }

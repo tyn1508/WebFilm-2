@@ -1,37 +1,50 @@
-import { useEffect } from "react"
-import Home from "./pages/Home/Home"
-import Login from "./pages/Login/Login"
-import Player from "./pages/Player/Player"
+import { useEffect } from "react";
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase"; // Đảm bảo đường dẫn đúng
+import Home from "./pages/Home/Home";
+import Login from "./pages/Login/Login";
+import Player from "./pages/Player/Player";
+import Update from "./pages/Update/Update";
+import Favorites from './pages/Favorites/Favorites';
 
-import { Routes, Route, useNavigate } from 'react-router-dom'
-import { onAuthStateChanged } from "firebase/auth"
-import { auth } from "./firebase"
 
 const App = () => {
-const navigate = useNavigate();
-  
-  useEffect(()=>{
-    onAuthStateChanged(auth, async (user)=>{
-      if(user){
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
         console.log("Logged In");
-        navigate('/');
+        // Chỉ điều hướng đến '/' nếu đang ở trang '/login'
+        if (window.location.pathname === '/login') {
+          navigate('/');
+        }
+      } else {
+        console.log("Logged Out");
+        // Chỉ điều hướng đến '/login' nếu không ở trang '/update'
+        if (window.location.pathname !== '/login' && window.location.pathname !== '/update') {
+          navigate('/login');
+        }
       }
-      else{
-        console.log("Logged Out")
-        navigate('/login')
-      }
-    })
-  },[])
-  
+    });
+
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
+  }, [navigate]);
+
   return (
     <div>
+
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />
-        <Route path='player/:id' element={<Player />} />
+        <Route path='/player/:id' element={<Player />} />
+        <Route path='/update' element={<Update />} />
+        <Route path='/favorites' element={<Favorites />} /> 
       </Routes>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

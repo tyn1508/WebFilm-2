@@ -49,7 +49,9 @@ const Login = () => {
               <label htmlFor="">Lưu mật khẩu</label>
               <input type="checkbox" />
             </div>
-            <p>Hỗ trợ</p>
+             {signState === "Đăng nhập" && (
+              <p>Quên mật khẩu</p>
+            )}
           </div>
         </form>
         <div className="form_switch">
