@@ -30,7 +30,7 @@ const Navbar = ({onSearch}) => {
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-    }, []);
+    }, [navigate]);
 
     const handleProfileClick = () => {
         console.log("Profile clicked");
