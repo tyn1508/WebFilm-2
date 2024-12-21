@@ -4,12 +4,12 @@ import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, si
 
 // Cấu hình Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyDeVzswjEWwUA49GgQ4tjYI0EipBsJU-sU",
-  authDomain: "filmlag-86f1e.firebaseapp.com",
-  projectId: "filmlag-86f1e",
-  storageBucket: "filmlag-86f1e.firebasestorage.app",
-  messagingSenderId: "282820710796",
-  appId: "1:282820710796:web:f0d689a4f2b349067406a9"
+    apiKey: "AIzaSyDeVzswjEWwUA49GgQ4tjYI0EipBsJU-sU",
+    authDomain: "filmlag-86f1e.firebaseapp.com",
+    projectId: "filmlag-86f1e",
+    storageBucket: "filmlag-86f1e.firebasestorage.app",
+    messagingSenderId: "282820710796",
+    appId: "1:282820710796:web:f0d689a4f2b349067406a9"
 };
 
 // Khởi tạo Firebase
@@ -58,7 +58,7 @@ const logout = async () => {
 };
 
 // Hàm cập nhật thông tin người dùng
-const updateUser  = async (uid, updatedData) => {
+const updateUser = async (uid, updatedData) => {
     try {
         const userDoc = doc(db, "users", uid); // Sửa tên collection thành "users"
         await updateDoc(userDoc, updatedData);
@@ -128,4 +128,4 @@ const removeFavoriteAndMovie = async (favoriteId, movieId) => {
 
 
 // Xuất các hàm và biến
-export { auth, db, login, signup, logout, updateUser , resetPassword, addFavorite, getFavorites, removeFavorite, removeFavoriteAndMovie};
+export { auth, db, login, signup, logout, updateUser, resetPassword, addFavorite, getFavorites, removeFavorite, removeFavoriteAndMovie };

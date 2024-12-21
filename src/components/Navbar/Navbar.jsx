@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
 import './Navbar.css';
 
 import search_icon from '../../assets/search_icon.svg';
@@ -10,7 +9,7 @@ import caret_icon from '../../assets/caret_icon.svg';
 
 import { auth, logout } from '../../firebase';
 
-const Navbar = ({ onSearch }) => {
+const Navbar = () => {
     const navbarRef = useRef();
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState('');
@@ -29,44 +28,43 @@ const Navbar = ({ onSearch }) => {
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-    }, [navigate]);
+    }, []);
 
     const handleProfileClick = () => {
-        if (auth.currentUser) {
+        if (auth.currentUser ) {
             navigate('/update');
         } else {
             navigate('/login');
         }
     };
 
-    const handleSearch = async () => {
+    const handleSearch = () => {
         if (searchTerm.trim() === '') {
             alert('Vui lòng nhập từ khóa tìm kiếm.');
             return;
         }
-        try {
-            const results = await onSearch(searchTerm);
-            if (results.length === 0) {
-                alert('Không tìm thấy kết quả nào.');
-            }
-        } catch (error) {
-            console.error("Error during search:", error);
-            alert('Đã xảy ra lỗi trong quá trình tìm kiếm.');
-        }
-        setSearchTerm('');
+        onSearch(searchTerm); // Cập nhật searchTerm trong Home
+        setSearchTerm(''); // Xóa input sau khi tìm kiếm
     };
+
+    const handleLogoClick = () => {
+        onSearch(''); // Đặt lại searchTerm về chuỗi rỗng
+        onLogoClick(); // Gọi hàm từ Home để đặt lại trạng thái
+        navigate('/'); // Chuyển hướng về trang chủ
+    };
+
     return (
         <div className='navbar' ref={navbarRef}>
             <div className="navbar_left">
-                <div className="layout_logoText">
+                <div className="layout_logoText" onClick={handleLogoClick}>
                     FilmLag
                 </div>
                 <ul className="layout_menu">
-                    <li>Trang chủ</li>
-                    <li>Tv Shows</li>
+                    <li onClick={handleLogoClick}>Trang chủ</li> {/* Đảm bảo gọi handleLogoClick */}
+                    <li onClick={onTvShowClick}>Tv Shows</li>
                     <li>Movies</li>
-                    <li >
-                    <Link to="/favorites">Danh sách yêu thích</Link>
+                    <li>
+                        <Link to="/favorites">Danh sách yêu thích</Link>
                     </li>
                     <li>FAQ</li>
                 </ul>

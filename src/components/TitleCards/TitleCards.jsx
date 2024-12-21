@@ -4,21 +4,21 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
 import './TitleCards.css';
 import { Link } from 'react-router-dom';
-import { addFavorite, removeFavorite, auth, getFavorites } from '../../firebase'; 
+import { addFavorite, removeFavorite, auth, getFavorites } from '../../firebase';
 
 const TitleCards = ({ title, category, searchTerm }) => {
     const [movies, setMovies] = useState([]);
     const [favorites, setFavorites] = useState([]);
-    const [currentUser  , setCurrentUser  ] = useState(null);
+    const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(async (user) => {
             if (user) {
-                setCurrentUser (user);
+                setCurrentUser(user);
                 const userFavorites = await getFavorites(user.uid);
                 setFavorites(userFavorites);
             } else {
-                setCurrentUser (null);
+                setCurrentUser(null);
                 setFavorites([]); // Reset favorites if no user is logged in
             }
         });
@@ -46,6 +46,9 @@ const TitleCards = ({ title, category, searchTerm }) => {
                     case 'discover_comedy':
                         url = `https://api.themoviedb.org/3/discover/movie?api_key=2d46f4e24149ef00c1c8d78ebf573d06&language=vi&with_genres=35`;
                         break;
+                    case 'tv': // Nếu category là TV Shows
+                        url = `https://api.themoviedb.org/3/tv/popular?api_key=2d46f4e24149ef00c1c8d78ebf573d06&language=vi`;
+                        break;
                     default:
                         url = `https://api.themoviedb.org/3/movie/${category}?api_key=2d46f4e24149ef00c1c8d78ebf573d06&language=vi`;
                 }
@@ -63,7 +66,7 @@ const TitleCards = ({ title, category, searchTerm }) => {
     }, [category, searchTerm]);
 
     const toggleFavorite = async (movie) => {
-        if (!currentUser  || !currentUser .uid) {
+        if (!currentUser || !currentUser.uid) {
             alert("Vui lòng đăng nhập để thêm phim vào danh sách yêu thích.");
             return;
         }
@@ -78,7 +81,7 @@ const TitleCards = ({ title, category, searchTerm }) => {
                 setFavorites(updatedFavorites);
                 console.log(`${movie.title} đã được xóa khỏi danh sách yêu thích.`);
             } else {
-                await addFavorite(currentUser .uid, movie.id); // Add to Firestore
+                await addFavorite(currentUser.uid, movie.id); // Add to Firestore
                 const updatedFavorites = [...favorites, { itemId: movie.id, title: movie.title }];
                 setFavorites(updatedFavorites);
                 console.log(`${movie.title} đã được thêm vào danh sách yêu thích.`);
