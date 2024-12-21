@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { auth, getFavorites, removeFavoriteAndMovie } from '../../firebase'; // Đảm bảo bạn đã import các hàm từ firebase
 import { Link } from 'react-router-dom';
 import './Favorites.css'; // Import file CSS nếu cần

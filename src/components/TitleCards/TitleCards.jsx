@@ -95,7 +95,7 @@ const TitleCards = ({ title, category, searchTerm }) => {
             <h2>{searchTerm ? 'Kết quả tìm kiếm' : title}</h2>
             <div className="card-list">
                 <Swiper spaceBetween={30} slidesPerView={6}>
-                    {movies.length > 0 ? (
+                    {movies && movies.length > 0 ? ( // Kiểm tra xem movies có dữ liệu không
                         movies.map((movie) => (
                             <SwiperSlide key={movie.id} className="card">
                                 <Link style={{ textDecoration: "none" }} to={`/player/${movie.id}`}>
@@ -105,12 +105,12 @@ const TitleCards = ({ title, category, searchTerm }) => {
                                     />
                                     <h3>{movie.title}</h3>
                                 </Link>
-                                <div className="button-group"> {/* Nhóm các nút */}
+                                <div className="button-group">
                                     <Link to={`/player/${movie.id}`}>
-                                        <button className="play-button">Play</button> {/* Nút Play */}
+                                        <button className="play-button">Play</button>
                                     </Link>
                                     <button onClick={() => toggleFavorite(movie)}>
-                                        {favorites.some(fav => fav.itemId === movie.id) ? 'Đã theo dõi' : 'Theo dõi'}
+                                        {Array.isArray(favorites) && favorites.some(fav => fav.itemId === movie.id) ? 'Đã theo dõi' : 'Theo dõi'}
                                     </button>
                                 </div>
                             </SwiperSlide>

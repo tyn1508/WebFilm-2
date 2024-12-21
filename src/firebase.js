@@ -105,7 +105,6 @@ const getFavorites = async (uid) => {
         return favorites;
     } catch (error) {
         console.error("Lỗi lấy danh sách yêu thích:", error);
-        alert("Có lỗi xảy ra: " + error.message);
     }
 };
 
@@ -122,7 +121,7 @@ const removeFavorite = async (favoriteId) => {
 };
 
 // Cập nhật hàm xóa yêu thích để xóa phim
-const removeFavoriteAndMovie = async (favoriteId, movieId) => {
+const removeFavoriteAndMovie = async (favoriteId) => {
     await removeFavorite(favoriteId); // Xóa khỏi danh sách yêu thích
 };
 
