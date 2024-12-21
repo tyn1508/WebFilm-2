@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import './Navbar.css';
 
@@ -10,11 +10,10 @@ import caret_icon from '../../assets/caret_icon.svg';
 
 import { auth, logout } from '../../firebase';
 
-const Navbar = ({onSearch}) => {
+const Navbar = ({ onSearch }) => {
     const navbarRef = useRef();
-    const navigate = useNavigate(auth);
+    const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState('');
-  
 
     useEffect(() => {
         const handleScroll = () => {
@@ -33,21 +32,29 @@ const Navbar = ({onSearch}) => {
     }, [navigate]);
 
     const handleProfileClick = () => {
-        console.log("Profile clicked");
-        if (auth.currentUser ) {
+        if (auth.currentUser) {
             navigate('/update');
         } else {
-            console.log("User  not logged in");
             navigate('/login');
         }
     };
 
-    const handleSearch = () => {
-        // Gọi hàm onSearch để truyền searchTerm lên Home
-        onSearch(searchTerm);
+    const handleSearch = async () => {
+        if (searchTerm.trim() === '') {
+            alert('Vui lòng nhập từ khóa tìm kiếm.');
+            return;
+        }
+        try {
+            const results = await onSearch(searchTerm);
+            if (results.length === 0) {
+                alert('Không tìm thấy kết quả nào.');
+            }
+        } catch (error) {
+            console.error("Error during search:", error);
+            alert('Đã xảy ra lỗi trong quá trình tìm kiếm.');
+        }
         setSearchTerm('');
     };
-
     return (
         <div className='navbar' ref={navbarRef}>
             <div className="navbar_left">
@@ -58,7 +65,9 @@ const Navbar = ({onSearch}) => {
                     <li>Trang chủ</li>
                     <li>Tv Shows</li>
                     <li>Movies</li>
-                    <li>Danh sách yêu thích</li>
+                    <li >
+                    <Link to="/favorites">Danh sách yêu thích</Link>
+                    </li>
                     <li>FAQ</li>
                 </ul>
             </div>
@@ -78,25 +87,26 @@ const Navbar = ({onSearch}) => {
                 <img 
                     src={search_icon} 
                     className='icons' 
-                    alt="" 
+                    alt="Search" 
                     onClick={handleSearch} 
                 />
                 
-                <img src={bell_icon} className='icons' alt="" />
+                <img src={bell_icon} className='icons' alt="Notifications" />
                 <div className="navbar_profile">
-                    <img src={profile_img} className='profile' alt="" />
-                    <img src={caret_icon} className='' alt="" />
+                    <img src={profile_img} className='profile' alt="Profile" />
+                    <img src={caret_icon} className='caret' alt="Dropdown" />
                     <div className="dropdown">
-                        <p onClick={handleProfileClick}>
-                            ProFile
-                        </p>
-                        <p onClick={logout}>
-                            Logout
-                        </p>
+                        <div className="dropdown-content">
+                            <p onClick={handleProfileClick}>
+                                Profile
+                            </p>
+                            <p onClick={logout}>
+                                Logout
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
-         
         </div>
     );
 }
