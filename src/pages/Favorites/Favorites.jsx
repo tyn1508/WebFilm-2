@@ -40,19 +40,22 @@ const Favorites = () => {
 
         return (
             <ul>
-                {favorites.map((fav) => (
-                    <li key={fav.id}>
-                        <Link to={`/player/${fav.itemId}`}>
-                            <img
-                                src={`https://image.tmdb.org/t/p/w500${fav.poster_path}`}
-                                alt={fav.title}
-
-                            />
-                            <h3>{fav.title}</h3>
-                        </Link>
-                        <button onClick={() => handleRemoveFavorite(fav.id)}>Xóa</button>
-                    </li>
-                ))}
+                {favorites && favorites.length > 0 ? (
+                    favorites.map((fav) => (
+                        <li key={fav.id}>
+                            <Link to={`/player/${fav.itemId}`}>
+                                <img
+                                    src={`https://image.tmdb.org/t/p/w500${fav.poster_path}`}
+                                    alt={fav.title}
+                                />
+                                <h3>{fav.title}</h3>
+                            </Link>
+                            <button onClick={() => handleRemoveFavorite(fav.id)}>Xóa</button>
+                        </li>
+                    ))
+                ) : (
+                    <p>Không có mục yêu thích nào.</p>
+                )}
             </ul>
         );
     };
