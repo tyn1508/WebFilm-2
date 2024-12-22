@@ -38,6 +38,17 @@
     color: #4dc4cd;
     
 }
+    
+.navbar_left ul li a{ 
+    margin-right: 20px;
+    cursor: pointer;
+    color: white; /* Màu chữ trắng */
+    text-decoration: none; /* Bỏ gạch chân */
+}
+
+.navbar_left ul li a:hover {
+    color: #4dc4cd; /* Màu chữ khi hover */
+}
 .navbar_right{
     display: flex;
     gap: 20px;
