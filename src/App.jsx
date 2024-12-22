@@ -25,8 +25,10 @@ useEffect(() => {
       if (window.location.pathname !== '/login' && window.location.pathname !== '/update') {
         navigate('/login');
       }
-    })
-  },[])
+    }
+  });
+}, [navigate]);
+
   
   return (
     <div>
