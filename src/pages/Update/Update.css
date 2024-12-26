@@ -7,7 +7,7 @@
 .update_form {
     width: 100%;
     max-width: 450px;
-    background: rgba(0, 0, 0, 0.75); /* Nền tương tự như login */
+    background: rgba(0, 0, 0, 0.125); /* Nền tương tự như login */
     border-radius: 5px;
     padding: 60px;
     margin: auto;
@@ -45,5 +45,12 @@
     font-size: 16px;
     font-weight: 500;
     margin-top: 20px;
+    cursor: pointer;
+}
+.update img{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 50px;
     cursor: pointer;
 }
