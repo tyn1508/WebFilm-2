@@ -92,12 +92,27 @@ const TitleCards = ({ title, category, searchTerm }) => {
             console.error("Lỗi khi thay đổi yêu thích:", error);
         }
     };
+
     return (
         <div className="title-cards">
             <h2>{searchTerm ? 'Kết quả tìm kiếm' : title}</h2>
             <div className="card-list">
-                <Swiper spaceBetween={30} slidesPerView={6}>
-                    {movies && movies.length > 0 ? ( // Kiểm tra xem movies có dữ liệu không
+                <Swiper
+                    spaceBetween={30}
+                    slidesPerView={6}  /* Default: 6 items per row on desktop */
+                    breakpoints={{
+                        1024: { // Desktop
+                            slidesPerView: 6,
+                        },
+                        768: { // Tablet
+                            slidesPerView: 4,
+                        },
+                        480: { // Mobile
+                            slidesPerView: 2,
+                        }
+                    }}
+                >
+                    {movies && movies.length > 0 ? (
                         movies.map((movie) => (
                             <SwiperSlide key={movie.id} className="card">
                                 <Link style={{ textDecoration: "none" }} to={`/player/${movie.id}`}>
