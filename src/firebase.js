@@ -22,7 +22,7 @@ const signup = async (name, email, password) => {
     try {
         const res = await createUserWithEmailAndPassword(auth, email, password);
         const user = res.user;
-        await addDoc(collection(db, "users"), { // Sửa tên collection thành "users"
+        await addDoc(collection(db, "user"), { // Sửa tên collection thành "users"
             uid: user.uid,
             name,
             authProvider: "local",
@@ -60,7 +60,7 @@ const logout = async () => {
 // Hàm cập nhật thông tin người dùng
 const updateUser = async (uid, updatedData) => {
     try {
-        const userDoc = doc(db, "users", uid); // Sửa tên collection thành "users"
+        const userDoc = doc(db, "user", uid); // Sửa tên collection thành "users"
         await updateDoc(userDoc, updatedData);
         console.log("Cập nhật thông tin thành công");
     } catch (error) {
