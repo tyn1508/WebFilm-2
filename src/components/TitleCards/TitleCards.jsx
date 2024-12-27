@@ -4,21 +4,22 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
 import './TitleCards.css';
 import { Link } from 'react-router-dom';
-import { addFavorite, removeFavorite, auth, getFavorites } from '../../firebase'; 
+import { addFavorite, removeFavorite, auth, getFavorites } from '../../firebase';
+import { applyActionCode } from 'firebase/auth';
 
 const TitleCards = ({ title, category, searchTerm }) => {
     const [movies, setMovies] = useState([]);
     const [favorites, setFavorites] = useState([]);
-    const [currentUser  , setCurrentUser  ] = useState(null);
+    const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(async (user) => {
             if (user) {
-                setCurrentUser (user);
+                setCurrentUser(user);
                 const userFavorites = await getFavorites(user.uid);
                 setFavorites(userFavorites);
             } else {
-                setCurrentUser (null);
+                setCurrentUser(null);
                 setFavorites([]); // Reset favorites if no user is logged in
             }
         });
@@ -67,32 +68,61 @@ const TitleCards = ({ title, category, searchTerm }) => {
             alert("Vui lòng đăng nhập để thêm phim vào danh sách yêu thích.");
             return;
         }
-
+    
+        if (!movie || !movie.id) {
+            console.error("Movie is undefined or does not have an ID.");
+            return;
+        }
+    
         const isFavorite = favorites.some(fav => fav.itemId === movie.id);
-
+    
         try {
             if (isFavorite) {
                 const favoriteToRemove = favorites.find(fav => fav.itemId === movie.id);
-                await removeFavorite(favoriteToRemove.id); // Remove from Firestore
+                await removeFavorite(favoriteToRemove.id); // Xóa khỏi Firestore
                 const updatedFavorites = favorites.filter(fav => fav.itemId !== movie.id);
                 setFavorites(updatedFavorites);
                 console.log(`${movie.title} đã được xóa khỏi danh sách yêu thích.`);
             } else {
-                await addFavorite(currentUser .uid, movie.id); // Add to Firestore
-                const updatedFavorites = [...favorites, { itemId: movie.id, title: movie.title }];
+                // Gọi API để lấy thông tin chi tiết về bộ phim
+                const response = await axios.get(`https://api.themoviedb.org/3/movie/${movie.id}?api_key=2d46f4e24149ef00c1c8d78ebf573d06&language=vi`);
+                const movieDetails = response.data;
+    
+                // Thêm vào Firestore
+                await addFavorite(currentUser .uid, movie.id, movieDetails); // Gọi hàm với thông tin chi tiết
+                const updatedFavorites = [...favorites, { 
+                    itemId: movieDetails.id, 
+                    title: movieDetails.title, 
+                    poster_path: movieDetails.poster_path // Lưu thêm thông tin poster
+                }];
                 setFavorites(updatedFavorites);
                 console.log(`${movie.title} đã được thêm vào danh sách yêu thích.`);
             }
         } catch (error) {
-            console.error("Error toggling favorite:", error);
+            console.error("Lỗi khi thay đổi yêu thích:", error);
         }
     };
+
     return (
         <div className="title-cards">
             <h2>{searchTerm ? 'Kết quả tìm kiếm' : title}</h2>
             <div className="card-list">
-                <Swiper spaceBetween={30} slidesPerView={6}>
-                    {movies.length > 0 ? (
+                <Swiper
+                    spaceBetween={30}
+                    slidesPerView={5}  /* Default: 6 items per row on desktop */
+                    breakpoints={{
+                        1024: { // Desktop
+                            slidesPerView: 6,
+                        },
+                        768: { // Tablet
+                            slidesPerView: 4,
+                        },
+                        480: { // Mobile
+                            slidesPerView: 2,
+                        }
+                    }}
+                >
+                    {movies && movies.length > 0 ? (
                         movies.map((movie) => (
                             <SwiperSlide key={movie.id} className="card">
                                 <Link style={{ textDecoration: "none" }} to={`/player/${movie.id}`}>
@@ -102,12 +132,12 @@ const TitleCards = ({ title, category, searchTerm }) => {
                                     />
                                     <h3>{movie.title}</h3>
                                 </Link>
-                                <div className="button-group"> {/* Nhóm các nút */}
+                                <div className="button-group">
                                     <Link to={`/player/${movie.id}`}>
-                                        <button className="play-button">Play</button> {/* Nút Play */}
+                                        <button className="play-button">Play</button>
                                     </Link>
                                     <button onClick={() => toggleFavorite(movie)}>
-                                        {favorites.some(fav => fav.itemId === movie.id) ? 'Đã theo dõi' : 'Theo dõi'}
+                                        {Array.isArray(favorites) && movie && movie.id && favorites.some(fav => fav.itemId === movie.id) ? 'Đã theo dõi' : 'Theo dõi'}
                                     </button>
                                 </div>
                             </SwiperSlide>

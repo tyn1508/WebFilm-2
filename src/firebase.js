@@ -4,12 +4,12 @@ import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, si
 
 // Cấu hình Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyDeVzswjEWwUA49GgQ4tjYI0EipBsJU-sU",
-  authDomain: "filmlag-86f1e.firebaseapp.com",
-  projectId: "filmlag-86f1e",
-  storageBucket: "filmlag-86f1e.firebasestorage.app",
-  messagingSenderId: "282820710796",
-  appId: "1:282820710796:web:f0d689a4f2b349067406a9"
+    apiKey: "AIzaSyDeVzswjEWwUA49GgQ4tjYI0EipBsJU-sU",
+    authDomain: "filmlag-86f1e.firebaseapp.com",
+    projectId: "filmlag-86f1e",
+    storageBucket: "filmlag-86f1e.firebasestorage.app",
+    messagingSenderId: "282820710796",
+    appId: "1:282820710796:web:f0d689a4f2b349067406a9"
 };
 
 // Khởi tạo Firebase
@@ -22,7 +22,7 @@ const signup = async (name, email, password) => {
     try {
         const res = await createUserWithEmailAndPassword(auth, email, password);
         const user = res.user;
-        await addDoc(collection(db, "users"), { // Sửa tên collection thành "users"
+        await addDoc(collection(db, "user"), { // Sửa tên collection thành "users"
             uid: user.uid,
             name,
             authProvider: "local",
@@ -58,9 +58,9 @@ const logout = async () => {
 };
 
 // Hàm cập nhật thông tin người dùng
-const updateUser  = async (uid, updatedData) => {
+const updateUser = async (uid, updatedData) => {
     try {
-        const userDoc = doc(db, "users", uid); // Sửa tên collection thành "users"
+        const userDoc = doc(db, "user", uid); // Sửa tên collection thành "users"
         await updateDoc(userDoc, updatedData);
         console.log("Cập nhật thông tin thành công");
     } catch (error) {
@@ -81,14 +81,22 @@ const resetPassword = async (email) => {
 };
 
 // Hàm thêm mục yêu thích
-const addFavorite = async (uid, itemId) => {
+const addFavorite = async (uid, itemId, movieDetails) => {
+    if (!uid || !itemId) {
+        console.error("UID hoặc ItemID không hợp lệ.");
+        alert("UID hoặc ItemID không hợp lệ.");
+        return;
+    }
+
     try {
-        await addDoc(collection(db, "favorites"), {
+        const docRef = await addDoc(collection(db, "favorites"), {
             uid,
             itemId,
+            title: movieDetails.title, // Lưu tên phim
+            poster_path: movieDetails.poster_path, // Lưu đường dẫn poster
             createdAt: new Date(),
         });
-        console.log("Đã thêm vào danh sách yêu thích");
+        console.log("Đã thêm vào danh sách yêu thích với ID:", docRef.id);
     } catch (error) {
         console.error("Lỗi thêm yêu thích:", error);
         alert("Có lỗi xảy ra: " + error.message);
@@ -97,17 +105,31 @@ const addFavorite = async (uid, itemId) => {
 
 // Hàm lấy danh sách yêu thích
 const getFavorites = async (uid) => {
+    if (!uid) {
+        console.error("UID không hợp lệ.");
+        alert("UID không hợp lệ.");
+        return [];
+    }
+
     try {
         const favoritesCollection = collection(db, "favorites");
         const q = query(favoritesCollection, where("uid", "==", uid));
         const querySnapshot = await getDocs(q);
+
+        if (querySnapshot.empty) {
+            console.log("Không có danh sách yêu thích nào.");
+            return [];
+        }
+
         const favorites = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        console.log("Danh sách yêu thích:", favorites);
         return favorites;
     } catch (error) {
         console.error("Lỗi lấy danh sách yêu thích:", error);
         alert("Có lỗi xảy ra: " + error.message);
     }
 };
+
 
 // Hàm xóa mục yêu thích
 const removeFavorite = async (favoriteId) => {
@@ -122,10 +144,10 @@ const removeFavorite = async (favoriteId) => {
 };
 
 // Cập nhật hàm xóa yêu thích để xóa phim
-const removeFavoriteAndMovie = async (favoriteId, movieId) => {
+const removeFavoriteAndMovie = async (favoriteId) => {
     await removeFavorite(favoriteId); // Xóa khỏi danh sách yêu thích
 };
 
 
 // Xuất các hàm và biến
-export { auth, db, login, signup, logout, updateUser , resetPassword, addFavorite, getFavorites, removeFavorite, removeFavoriteAndMovie};
+export { auth, db, login, signup, logout, updateUser, resetPassword, addFavorite, getFavorites, removeFavorite, removeFavoriteAndMovie };

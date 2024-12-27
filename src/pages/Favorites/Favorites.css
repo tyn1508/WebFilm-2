@@ -2,36 +2,87 @@
     padding: 20px;
     font-family: "Montserrat", sans-serif;
     font-style: normal;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 12px; /* Tăng độ bo góc */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Tăng độ đổ bóng */
+}
+.img_button {
+    cursor: pointer; /* Thêm con trỏ khi hover */
+    margin-bottom: 20px; /* Khoảng cách dưới nút quay lại */
+    width: 30px; /* Kích thước hình ảnh nút quay lại */
+    height: auto; /* Giữ tỷ lệ hình ảnh */
 }
 
 .favorites h2 {
-    text-align: left;
+    text-align: center; /* Căn giữa tiêu đề */
     margin-bottom: 20px;
-    font-size: 24px;
+    font-size: 28px; /* Tăng kích thước chữ */
     text-transform: uppercase;
-    color: #ede8e8;
+    color: #ffffff; /* Thay đổi màu chữ */
 }
 
 .favorites ul {
-    display: flex; /* Sử dụng Flexbox */
-    flex-wrap: wrap; /* Cho phép các mục xuống hàng khi không đủ chỗ */
-    list-style-type: none; /* Bỏ dấu chấm cho danh sách */
-    padding: 0; /* Bỏ padding cho danh sách */
+    display: flex;
+    flex-wrap: wrap;
+    list-style-type: none;
+    padding: 0;
+    justify-content: center; /* Căn giữa các mục */
 }
 
 .favorites li {
     display: flex;
-    flex-direction: column; /* Căn giữa các mục trong danh sách */
+    flex-direction: column;
     align-items: center; /* Căn giữa các mục */
-    margin: 10px; /* Khoảng cách giữa các mục */
-    border-radius: 8px;
+    margin: 15px; /* Tăng khoảng cách giữa các mục */
+    border-radius: 12px; /* Tăng độ bo góc */
     overflow: hidden;
-    transition: transform 0.3s;
-    width: 150px; /* Đặt chiều rộng cho mỗi mục */
+    transition: transform 0.3s, box-shadow 0.3s; /* Thêm hiệu ứng cho box-shadow */
+    width: 180px; /* Thay đổi chiều rộng */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15); /* Đổ bóng cho item */
+}
+.favorites li:hover {
+    transform: scale(1.1); /* Tăng hiệu ứng phóng to khi hover */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Thêm bóng khi hover */
 }
 
-.favorites li:hover {
-    transform: scale(1.05); /* Hiệu ứng phóng to khi hover*/
+.favorites img {
+    width: 60px; /* Tăng kích thước hình ảnh */
+    height: 60px; /* Tăng kích thước hình ảnh */
+    cursor: pointer;
+}
+.favorite-item img {
+    width: 100px; /* Kích thước hình ảnh phim */
+    height: auto; /* Giữ tỷ lệ hình ảnh */
+    margin-bottom: 10px; /* Khoảng cách giữa hình ảnh và tiêu đề */
+    display: block; /* Đảm bảo hình ảnh là block để căn giữa */
+    text-align: center;
+}
+.favorites a {
+    color: #ffffff; /* Thay đổi màu chữ liên kết */
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.favorites a:hover {
+    color: #ffcc00; /* Thay đổi màu khi hover */
+}
+.favorite-button {
+    background-color: transparent; /* Nền trong suốt */
+    color: #ffffff; /* Màu chữ trắng */
+    border: 2px solid #ffffff; /* Viền trắng */
+    border-radius: 8px; /* Bo góc */
+    padding: 10px 15px; /* Khoảng cách bên trong */
+    font-size: 16px; /* Kích thước chữ */
+    cursor: pointer; /* Con trỏ khi hover */
+    transition: background-color 0.3s, transform 0.3s, color 0.3s; /* Hiệu ứng chuyển màu và phóng to */
+}
+
+.favorite-button:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Nền sáng khi hover */
+    color: #ffffff; /* Giữ màu chữ trắng khi hover */
+    transform: scale(1.05); /* Phóng to nhẹ khi hover */
+}
+
+.favorite-button:focus {
+    outline: none; /* Bỏ viền khi nút được chọn */
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5); /* Hiệu ứng bóng khi nút được chọn */
 }
