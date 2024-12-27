@@ -9,11 +9,7 @@ import caret_icon from '../../assets/caret_icon.svg';
 
 import { auth, logout } from '../../firebase';
 
-<<<<<<< HEAD
-const Navbar = ({onSearch, onLogoClick, onTvShowClick}) => {
-=======
 const Navbar = ({onSearch , onTvShowClick, onLogoClick}) => {
->>>>>>> main_3
     const navbarRef = useRef();
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState('');

@@ -112,11 +112,7 @@ const TitleCards = ({ title, category, searchTerm }) => {
                                         <button className="play-button">Play</button>
                                     </Link>
                                     <button onClick={() => toggleFavorite(movie)}>
-<<<<<<< HEAD
-                                        {Array.isArray(favorites) && favorites.some(fav => fav.itemId === movie.id) ? 'Đã theo dõi' : 'Theo dõi'}
-=======
                                         {Array.isArray(favorites) && movie && movie.id && favorites.some(fav => fav.itemId === movie.id) ? 'Đã theo dõi' : 'Theo dõi'}
->>>>>>> main_3
                                     </button>
                                 </div>
                             </SwiperSlide>
