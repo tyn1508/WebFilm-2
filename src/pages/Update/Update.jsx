@@ -25,22 +25,37 @@ const Update = () => {
   }, []);
 
   const fetchUserNameByEmail = async (email) => {
-    const usersRef = collection(db, 'user');
-    const q = query(usersRef, where('email', '==', email));
-    try {
-      const querySnapshot = await getDocs(q);
-      if (!querySnapshot.empty) {
-        querySnapshot.forEach((doc) => {
-          const userData = doc.data();
-          setUsername(userData.name);
-        });
-      } else {
-        console.log("Không tìm thấy người dùng với email:", email);
-      }
-    } catch (error) {
-      console.error("Lỗi khi lấy tên người dùng:", error);
+    // Đảm bảo rằng email không phải là null hoặc rỗng
+    if (!email) {
+        console.error("Email không hợp lệ.");
+        return;
     }
-  };
+
+    // Sử dụng tên collection chính xác
+    const usersRef = collection(db, 'user'); // Đảm bảo tên collection là 'user'
+    const q = query(usersRef, where('email', '==', email));
+
+    try {
+        console.log("Fetching user name for email:", email); // Log email để kiểm tra
+
+        // Lấy danh sách tài liệu từ Firestore
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+            // Giả sử chỉ cần tên từ tài liệu đầu tiên
+            const doc = querySnapshot.docs[0];
+            const userData = doc.data();
+
+            // Cập nhật tên người dùng
+            setUsername(userData.name);
+            console.log("Tên người dùng đã được cập nhật:", userData.name);
+        } else {
+            console.log("Không tìm thấy người dùng với email:", email);
+        }
+    } catch (error) {
+        console.error("Lỗi khi lấy tên người dùng:", error);
+    }
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
