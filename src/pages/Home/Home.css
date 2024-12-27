@@ -50,3 +50,19 @@
 .hero_btns .btn.dark_btn:hover{
     background: #6d6d6e66;
 }
+.hero {
+    position: relative;
+}
+
+.banner-img {
+    width: 100%;
+    mask-image: linear-gradient(to right, transparent, black 60%);
+    -weblit-mask-image: linear-gradient(to right, transparent, black 60%);
+}
+
+/* Ẩn banner trên thiết bị di động */
+@media (max-width: 768px) {
+    .hero {
+        display: none; /* Ẩn toàn bộ hero */
+    }
+}
