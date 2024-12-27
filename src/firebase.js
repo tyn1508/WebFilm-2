@@ -81,7 +81,7 @@ const resetPassword = async (email) => {
 };
 
 // Hàm thêm mục yêu thích
-const addFavorite = async (uid, itemId) => {
+const addFavorite = async (uid, itemId, movieDetails) => {
     if (!uid || !itemId) {
         console.error("UID hoặc ItemID không hợp lệ.");
         alert("UID hoặc ItemID không hợp lệ.");
@@ -92,6 +92,8 @@ const addFavorite = async (uid, itemId) => {
         const docRef = await addDoc(collection(db, "favorites"), {
             uid,
             itemId,
+            title: movieDetails.title, // Lưu tên phim
+            poster_path: movieDetails.poster_path, // Lưu đường dẫn poster
             createdAt: new Date(),
         });
         console.log("Đã thêm vào danh sách yêu thích với ID:", docRef.id);

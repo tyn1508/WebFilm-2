@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
-import { auth, getFavorites, removeFavoriteAndMovie } from '../../firebase'; // Đảm bảo bạn đã import các hàm từ firebase
-import { Link ,useNavigate} from 'react-router-dom';
+import { auth, getFavorites, removeFavoriteAndMovie } from '../../firebase';
+import { Link, useNavigate } from 'react-router-dom';
 import back_arrow_icon from '../../assets/back_arrow_icon.png';
-import './Favorites.css'; // Import file CSS nếu cần
+import './Favorites.css';
 
 const Favorites = () => {
     const [favorites, setFavorites] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
-
 
     // Hàm lấy danh sách yêu thích
     const fetchFavorites = async (userId) => {
@@ -40,26 +39,24 @@ const Favorites = () => {
         if (favorites.length === 0) {
             return <p>Không có phim nào trong danh sách yêu thích.</p>;
         }
-
+    
         return (
-            <ul>
-
-                {favorites && favorites.length > 0 ? (
-                    favorites.map((fav) => (
-                        <li key={fav.id}>
-                            <Link to={`/player/${fav.itemId}`}>
-                                <img
-                                    src={`https://image.tmdb.org/t/p/w500${fav.poster_path}`}
-                                    alt={fav.title}
-                                />
-                                <h3>{fav.title}</h3>
-                            </Link>
-                            <button onClick={() => handleRemoveFavorite(fav.id)}>Xóa</button>
-                        </li>
-                    ))
-                ) : (
-                    <p>Không có mục yêu thích nào.</p>
-                )}
+            <ul className="favorites-list">
+                {favorites.map((fav) => (
+                    <li key={fav.id} className="favorite-item">
+                        <Link to={`/player/${fav.itemId}`}>
+                            <img
+                                src={`https://image.tmdb.org/t/p/w500${fav.poster_path}`}
+                                alt={fav.title}
+                                className="movie-poster" // Thêm lớp cho hình ảnh phim
+                            />
+                            <h3>{fav.title}</h3>
+                        </Link>
+                        <button className="favorite-button" onClick={() => handleRemoveFavorite(fav.id)}>
+                            Xóa
+                        </button>
+                    </li>
+                ))}
             </ul>
         );
     };
@@ -78,9 +75,10 @@ const Favorites = () => {
 
     return (
         <div className="favorites">
-            <img src={back_arrow_icon} alt="Back" onClick={() => { navigate(-2) }} />
+            <img className="img_button" src={back_arrow_icon} alt="Back" onClick={() => { navigate(-1) }} />
             <h2>Danh sách phim yêu thích</h2>
             {renderFavorites()}
+
         </div>
     );
 };

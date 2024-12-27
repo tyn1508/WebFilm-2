@@ -5,6 +5,7 @@ import 'swiper/swiper-bundle.css';
 import './TitleCards.css';
 import { Link } from 'react-router-dom';
 import { addFavorite, removeFavorite, auth, getFavorites } from '../../firebase';
+import { applyActionCode } from 'firebase/auth';
 
 const TitleCards = ({ title, category, searchTerm }) => {
     const [movies, setMovies] = useState([]);
@@ -63,18 +64,18 @@ const TitleCards = ({ title, category, searchTerm }) => {
     }, [category, searchTerm]);
 
     const toggleFavorite = async (movie) => {
-        if (!currentUser || !currentUser.uid) {
+        if (!currentUser  || !currentUser .uid) {
             alert("Vui lòng đăng nhập để thêm phim vào danh sách yêu thích.");
             return;
         }
-
+    
         if (!movie || !movie.id) {
             console.error("Movie is undefined or does not have an ID.");
             return;
         }
-
+    
         const isFavorite = favorites.some(fav => fav.itemId === movie.id);
-
+    
         try {
             if (isFavorite) {
                 const favoriteToRemove = favorites.find(fav => fav.itemId === movie.id);
@@ -83,8 +84,17 @@ const TitleCards = ({ title, category, searchTerm }) => {
                 setFavorites(updatedFavorites);
                 console.log(`${movie.title} đã được xóa khỏi danh sách yêu thích.`);
             } else {
-                await addFavorite(currentUser.uid, movie.id); // Thêm vào Firestore
-                const updatedFavorites = [...favorites, { itemId: movie.id, title: movie.title }];
+                // Gọi API để lấy thông tin chi tiết về bộ phim
+                const response = await axios.get(`https://api.themoviedb.org/3/movie/${movie.id}?api_key=2d46f4e24149ef00c1c8d78ebf573d06&language=vi`);
+                const movieDetails = response.data;
+    
+                // Thêm vào Firestore
+                await addFavorite(currentUser .uid, movie.id, movieDetails); // Gọi hàm với thông tin chi tiết
+                const updatedFavorites = [...favorites, { 
+                    itemId: movieDetails.id, 
+                    title: movieDetails.title, 
+                    poster_path: movieDetails.poster_path // Lưu thêm thông tin poster
+                }];
                 setFavorites(updatedFavorites);
                 console.log(`${movie.title} đã được thêm vào danh sách yêu thích.`);
             }
