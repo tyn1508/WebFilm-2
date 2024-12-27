@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { resetPassword } from '../../firebase'; // Import hàm resetPassword từ firebase
 import './ResetPass.css';
 
+import back_arrow_icon from '../../assets/back_arrow_icon.png';
+
 const ResetPass = () => {
     const [email, setEmail] = useState('');
     const navigate = useNavigate();
@@ -15,6 +17,7 @@ const ResetPass = () => {
 
     return (
         <div className="reset-password">
+            <img src={back_arrow_icon} alt="Back" onClick={() => { navigate(-2) }} />
             <h1>Quên Mật Khẩu</h1>
             <form onSubmit={handleReset}>
                 <input
