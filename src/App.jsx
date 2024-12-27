@@ -7,7 +7,7 @@ import Login from "./pages/Login/Login";
 import Player from "./pages/Player/Player";
 import Update from "./pages/Update/Update";
 import Favorites from './pages/Favorites/Favorites';
-
+import ResetPass from './pages/ResetPassword/ResetPass';
 
 const App = () => {
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ const App = () => {
       } else {
         console.log("Logged Out");
         // Chỉ điều hướng đến '/login' nếu không ở trang '/update'
-        if (window.location.pathname !== '/login' && window.location.pathname !== '/update') {
+        if (window.location.pathname !== '/login' && window.location.pathname !== '/update' && window.location.pathname !== '/reset-password') {
           navigate('/login');
         }
       }
@@ -42,6 +42,7 @@ const App = () => {
         <Route path='/player/:id' element={<Player />} />
         <Route path='/update' element={<Update />} />
         <Route path='/favorites' element={<Favorites />} /> 
+        <Route path='/reset-password' element={<ResetPass />} />
       </Routes>
     </div>
   );
