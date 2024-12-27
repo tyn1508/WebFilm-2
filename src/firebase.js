@@ -22,7 +22,7 @@ const signup = async (name, email, password) => {
     try {
         const res = await createUserWithEmailAndPassword(auth, email, password);
         const user = res.user;
-        await addDoc(collection(db, "users"), { // Sửa tên collection thành "users"
+        await addDoc(collection(db, "user"), { // Sửa tên collection thành "users"
             uid: user.uid,
             name,
             authProvider: "local",
@@ -60,7 +60,7 @@ const logout = async () => {
 // Hàm cập nhật thông tin người dùng
 const updateUser = async (uid, updatedData) => {
     try {
-        const userDoc = doc(db, "users", uid); // Sửa tên collection thành "users"
+        const userDoc = doc(db, "user", uid); // Sửa tên collection thành "users"
         await updateDoc(userDoc, updatedData);
         console.log("Cập nhật thông tin thành công");
     } catch (error) {
@@ -82,13 +82,19 @@ const resetPassword = async (email) => {
 
 // Hàm thêm mục yêu thích
 const addFavorite = async (uid, itemId) => {
+    if (!uid || !itemId) {
+        console.error("UID hoặc ItemID không hợp lệ.");
+        alert("UID hoặc ItemID không hợp lệ.");
+        return;
+    }
+
     try {
-        await addDoc(collection(db, "favorites"), {
+        const docRef = await addDoc(collection(db, "favorites"), {
             uid,
             itemId,
             createdAt: new Date(),
         });
-        console.log("Đã thêm vào danh sách yêu thích");
+        console.log("Đã thêm vào danh sách yêu thích với ID:", docRef.id);
     } catch (error) {
         console.error("Lỗi thêm yêu thích:", error);
         alert("Có lỗi xảy ra: " + error.message);
@@ -97,16 +103,31 @@ const addFavorite = async (uid, itemId) => {
 
 // Hàm lấy danh sách yêu thích
 const getFavorites = async (uid) => {
+    if (!uid) {
+        console.error("UID không hợp lệ.");
+        alert("UID không hợp lệ.");
+        return [];
+    }
+
     try {
         const favoritesCollection = collection(db, "favorites");
         const q = query(favoritesCollection, where("uid", "==", uid));
         const querySnapshot = await getDocs(q);
+
+        if (querySnapshot.empty) {
+            console.log("Không có danh sách yêu thích nào.");
+            return [];
+        }
+
         const favorites = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        console.log("Danh sách yêu thích:", favorites);
         return favorites;
     } catch (error) {
         console.error("Lỗi lấy danh sách yêu thích:", error);
+        alert("Có lỗi xảy ra: " + error.message);
     }
 };
+
 
 // Hàm xóa mục yêu thích
 const removeFavorite = async (favoriteId) => {

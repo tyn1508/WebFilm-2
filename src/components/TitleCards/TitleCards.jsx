@@ -46,9 +46,6 @@ const TitleCards = ({ title, category, searchTerm }) => {
                     case 'discover_comedy':
                         url = `https://api.themoviedb.org/3/discover/movie?api_key=2d46f4e24149ef00c1c8d78ebf573d06&language=vi&with_genres=35`;
                         break;
-                    case 'tv': // Nếu category là TV Shows
-                        url = `https://api.themoviedb.org/3/tv/popular?api_key=2d46f4e24149ef00c1c8d78ebf573d06&language=vi`;
-                        break;
                     default:
                         url = `https://api.themoviedb.org/3/movie/${category}?api_key=2d46f4e24149ef00c1c8d78ebf573d06&language=vi`;
                 }
@@ -71,31 +68,51 @@ const TitleCards = ({ title, category, searchTerm }) => {
             return;
         }
 
+        if (!movie || !movie.id) {
+            console.error("Movie is undefined or does not have an ID.");
+            return;
+        }
+
         const isFavorite = favorites.some(fav => fav.itemId === movie.id);
 
         try {
             if (isFavorite) {
                 const favoriteToRemove = favorites.find(fav => fav.itemId === movie.id);
-                await removeFavorite(favoriteToRemove.id); // Remove from Firestore
+                await removeFavorite(favoriteToRemove.id); // Xóa khỏi Firestore
                 const updatedFavorites = favorites.filter(fav => fav.itemId !== movie.id);
                 setFavorites(updatedFavorites);
                 console.log(`${movie.title} đã được xóa khỏi danh sách yêu thích.`);
             } else {
-                await addFavorite(currentUser.uid, movie.id); // Add to Firestore
+                await addFavorite(currentUser.uid, movie.id); // Thêm vào Firestore
                 const updatedFavorites = [...favorites, { itemId: movie.id, title: movie.title }];
                 setFavorites(updatedFavorites);
                 console.log(`${movie.title} đã được thêm vào danh sách yêu thích.`);
             }
         } catch (error) {
-            console.error("Error toggling favorite:", error);
+            console.error("Lỗi khi thay đổi yêu thích:", error);
         }
     };
+
     return (
         <div className="title-cards">
             <h2>{searchTerm ? 'Kết quả tìm kiếm' : title}</h2>
             <div className="card-list">
-                <Swiper spaceBetween={30} slidesPerView={6}>
-                    {movies && movies.length > 0 ? ( // Kiểm tra xem movies có dữ liệu không
+                <Swiper
+                    spaceBetween={30}
+                    slidesPerView={5}  /* Default: 6 items per row on desktop */
+                    breakpoints={{
+                        1024: { // Desktop
+                            slidesPerView: 6,
+                        },
+                        768: { // Tablet
+                            slidesPerView: 4,
+                        },
+                        480: { // Mobile
+                            slidesPerView: 2,
+                        }
+                    }}
+                >
+                    {movies && movies.length > 0 ? (
                         movies.map((movie) => (
                             <SwiperSlide key={movie.id} className="card">
                                 <Link style={{ textDecoration: "none" }} to={`/player/${movie.id}`}>
@@ -110,7 +127,7 @@ const TitleCards = ({ title, category, searchTerm }) => {
                                         <button className="play-button">Play</button>
                                     </Link>
                                     <button onClick={() => toggleFavorite(movie)}>
-                                        {Array.isArray(favorites) && favorites.some(fav => fav.itemId === movie.id) ? 'Đã theo dõi' : 'Theo dõi'}
+                                        {Array.isArray(favorites) && movie && movie.id && favorites.some(fav => fav.itemId === movie.id) ? 'Đã theo dõi' : 'Theo dõi'}
                                     </button>
                                 </div>
                             </SwiperSlide>
